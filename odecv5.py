@@ -63,8 +63,7 @@ class Odec:
         image = glob.glob(image_path)
         result = self.model(image)      
         missing_count = result.xyxyn[0].size(dim=0)
-        return str(missing_count)
-
+        return missing_count
         # while True:
         #     img = np.squeeze(result.render())
         #     res = cv2.resize(img, dsize=(900,900), interpolation=cv2.INTER_CUBIC)
