@@ -76,7 +76,7 @@ def detectv5():
     f = request.files['url']
     f.save('./static/detect/uploaded.jpeg')
     missing = odec.detect_by_image('static/detect/uploaded.jpeg')
-    return "missing tool count: " + str(missing)
+    return "missing tool count: " + str(missing)  
 
 if __name__=='__main__':
     app.run(debug=True,port=8080, )
