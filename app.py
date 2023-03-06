@@ -54,19 +54,22 @@ def submit():
 
 @app.route('/detectv5',methods=['POST'])
 def detectv5():
-    logger.warning('reuest  : '+str(request))
+    # logger.warning('reuest  : '+str(request))
     
-    # request.date
+    # # request.date
     data = request.get_json()
-    logger.warning('data: '+data)
-    # f = data['image']
+    logger.warning('data: '+str(data))
+   
+    f = data['image']
+    image = base64_to_img(f)
     # logger.warning('fff: '+f)
 
-    f = request.files['image']
-    # logger.warning('fff: '+f)
+    # f = request.files['image']
+    # # logger.warning('fff: '+f)
 
-    f.save('./static/detect/uploaded.jpeg')
-    missing = odec.detect_by_image('static/detect/uploaded.jpeg')
+    # f.save('./static/detect/uploaded.jpeg')
+    # missing = odec.detect_by_image(image)
+    missing = odec.detectByUploadImage(image)
     return "missing tool count: " + str(missing) + " missing" 
     # print('request: '+str(request))
     #  # Get the JSON data from the request
