@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<video id="video" width="640" height="480" autoplay></video>
+<button id="snap">Snap Photo</button>
+<canvas id="canvas" width="640" height="480"></canvas>
+<script>
+    var video = document.getElementById('video');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({video: true})
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function (error) {
+                console.error('Unable to access camera:', error);
+            });
+    }
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    // Trigger photo take
+    document.getElementById("snap").addEventListener("click", function () {
+        context.drawImage(video, 0, 0, 640, 480);
+
+        // Get the image data from the canvas as a base64-encoded data URL
+        var imageDataUrl = canvas.toDataURL('image/jpeg');
+
+        // Create a FormData object and append the image data to it
+        var formData = new FormData();
+        formData.append('image', imageDataUrl);
+
+        // Send a POST request to the server with the image data in the request body
+        fetch('/detectv5', {
+            method: 'POST',
+            body: formData
+        })
+            .then(function (response) {
+                console.log('Image sent successfully');
+            })
+            .catch(function (error) {
+                console.error('Unable to send image:', error);
+            });
+    });
+</script>
+</body>
+</html>
