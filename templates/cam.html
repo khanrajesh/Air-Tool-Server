@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Camera Feed</title>
+  </head>
+  <body>
+    <h1>Camera Feed</h1>
+    
+    <label for="camera-select">Select number of cameras:</label>
+    <select id="camera-select">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+    
+    <button id="start-button">Start</button>
+    <button id="stop-button">Stop</button>
+    
+    <div id="camera-container"></div>
+    
+    <script>
+      const cameraContainer = document.getElementById('camera-container');
+      const cameraSelect = document.getElementById('camera-select');
+      const startButton = document.getElementById('start-button');
+      const stopButton = document.getElementById('stop-button');
+      
+      const intervalTime = 5000; // Time in milliseconds between each POST request
+      
+      let numCameras = 1;
+      let intervalIds = [];
+      
+      // Create the video and result div elements for each camera
+      function createCameraElements(numCameras) {
+        cameraContainer.innerHTML = '';
+        for (let i = 1; i <= numCameras; i++) {
+          const video = document.createElement('video');
+          video.setAttribute('id', `camera${i}`);
+          video.setAttribute('width', '400');
+          video.setAttribute('height', '300');
+          cameraContainer.appendChild(video);
+          
+          const resultDiv = document.createElement('div');
+          resultDiv.setAttribute('class', 'camera-result');
+          resultDiv.setAttribute('id', `camera${i}-result`);
+          cameraContainer.appendChild(resultDiv);
+        }
+      }
+      
+      // Start the image capture and POST request process for all cameras
+      function startProcess() {
+        for (let i = 1; i <= numCameras; i++) {
+          intervalIds.push(setInterval(() => {
+            takePictureAndPost(i);
+          }, intervalTime));
+          // Update the text in the corresponding div element to indicate that the process has started
+          const resultDiv = document.getElementById(`camera${i}-result`);
+          resultDiv.innerText = `Camera ${i} POST request started`;
+        }
+      }
+      
+      // Stop the image capture and POST request process for all cameras
+      function stopProcess() {
+        for (let i = 0; i < intervalIds.length; i++) {
+          clearInterval(intervalIds[i]);
+          // Reset the text in the corresponding div element
+          const resultDiv = document.getElementById(`camera${i + 1}-result`);
+          resultDiv.innerText = '';
+        }
+        intervalIds = [];
+      }
+      
+      // Take a picture from the camera and make a POST request
+      function takePictureAndPost(cameraIndex) {
+        // Take a picture from the camera
+        const image = takePictureFromCamera(cameraIndex);
+      
+        // Make a POST request with the image data
+        fetch('/post-image', {
+          method: 'POST',
+          body: JSON.stringify({ image: image }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => {
+          // Update the text in the corresponding div element with the result of the request
+          const resultDiv = document.getElementById(`camera${cameraIndex}-result`);
+          resultDiv.innerText = `Camera ${cameraIndex} POST request successful`;
+        })
+        .catch(error => {
+          // Update the text in the corresponding div element with the error message
+          const resultDiv = document.getElementById(`camera${cameraIndex}-result`);
+          resultDiv.innerText = `Camera ${cameraIndex} POST request failed: ${error}`;
+        });
+      }
+      
+      // Function to take a picture from the specified camera
+      function takePictureFromCamera(cameraIndex) {
+        // TODO: Implement logic to take a picture from the specified camera
+        // For now, return a placeholder image
+        return 'placeholder-image-data';
+      }
+      
+      // Add event listeners to the buttons
+      cameraSelect.addEventListener('change', () => {
+        numCameras = parseInt(cameraSelect.value);
+        createCameraElements(numCameras);
+      });
+      startButton.addEventListener('click', () => {
+        startProcess();
+      });
+      stopButton.addEventListener('click', () => {
+        stopProcess();
+      });
+      
+      // Initialize the page with one camera
+      createCameraElements(numCameras);
+    </script>
+  </body>
+</html>

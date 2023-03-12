@@ -7,7 +7,7 @@ import sys
 from pprint import pprint
 class Odec:
 
-    def __init__(self,model_path:str = 'odec/best_x_380_hyp_16_10.pt',model_conf:int=0.5,target_cam:int = 0):
+    def __init__(self,model_path:str = 'odec/best_x_380_hyp_16_10.pt',model_conf:int=0.25,target_cam:int = 0):
         self.model_path:str = model_path
         self.target_cam:int = target_cam
         self.win_name:int = 'ODEC'
@@ -106,10 +106,11 @@ class Odec:
     def detectByUploadImage(self,image:str):
         print("Please wait, Processing ...")
         # image = glob.glob(image_path)
-        result = self.model(image)      
+        result = self.model(image)    
+        img = np.squeeze(result.render())  
         missing_count = result.xyxyn[0].size(dim=0)
-        return missing_count
-
+        return img, missing_count
+    
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # detect_by_image('odec/best_x_300_hyp_27_9.pt','test_data/t2.jpg')

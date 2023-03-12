@@ -4,6 +4,7 @@ from PIL import Image
 from io import BytesIO
 import sys
 import  numpy as np
+import cv2
 # import code.v5.odec as dec
 
 ###########################logging part#################################
@@ -57,11 +58,16 @@ def detectv5():
     # logger.warning('reuest  : '+str(request))
     
     # # request.date
-    data = request.get_json()
-    logger.warning('data: '+str(data))
+    data = request.get_json()       
    
     f = data['image']
-    image = base64_to_img(f)
+    
+
+    encoded_data = f.split(",")[1]    
+    base64_decoded = base64.b64decode(encoded_data)    
+    image = Image.open(BytesIO(base64_decoded))    
+    image =  np.array(image)
+
     # logger.warning('fff: '+f)
 
     # f = request.files['image']
@@ -69,8 +75,19 @@ def detectv5():
 
     # f.save('./static/detect/uploaded.jpeg')
     # missing = odec.detect_by_image(image)
-    missing = odec.detectByUploadImage(image)
-    return "missing tool count: " + str(missing) + " missing" 
+    m_image, m_count = odec.detectByUploadImage(image)
+
+    # Convert the ndarray to bytes
+    image_bytes = cv2.imencode('.jpg', m_image)[1].tobytes()
+
+# Convert binary image data to base64-encoded string
+    base64_image = base64.b64encode(image_bytes).decode('utf-8')
+    data = {
+        'image': base64_image,
+        'count': m_count,
+    }
+
+    return data
     # print('request: '+str(request))
     #  # Get the JSON data from the request
     # json_data = request.get_json()
