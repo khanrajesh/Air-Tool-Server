@@ -88,28 +88,6 @@ def detectv5():
     }
 
     return data
-    # print('request: '+str(request))
-    #  # Get the JSON data from the request
-    # json_data = request.get_json()
-    # print('json_data: '+ str(json_data))
-    # # Get the image data from the JSON data
-    # image_data = json_data['image']
-    # print('image_data: '+ str(image_data))
-
-   
-    # logger.warning('request image : '+str(image_data))
-
-    
-    # # Decode the Base64 encoded image data
-    # image_bytes = base64.b64decode(image_data.split(',')[1])
-    # return ""
-    # # Save the image data to a file
-    # with open('image.jpg', 'wb') as f:
-    #     f.write(image_bytes)
-        
-    # # Process the image and return the result
-    # missing = odec.detect_by_image('image.jpg')
-    # return "missing tool count: " + str(missing) + " missing"
 
 if __name__=='__main__':
     app.run(debug=True,port=8080, )
@@ -124,3 +102,6 @@ def base64_to_img(base64_image):
 
 #export FLASK_ENV=development
 # set FLASK_ENV=development
+
+# export FLASK_APP=app.py
+# flask run --host=0.0.0.0
