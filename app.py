@@ -1,10 +1,12 @@
 from flask import Flask,request, jsonify,render_template
+from flask_cors import CORS, cross_origin
 import base64
 from PIL import Image
 from io import BytesIO
 import sys
 import  numpy as np
 import cv2
+from  odecv5 import Odec
 # import code.v5.odec as dec
 
 ###########################logging part#################################
@@ -30,12 +32,12 @@ logger.addHandler(file_handler)
 
   
 # Insert the path of modules folder 
-from  odecv5 import Odec
+
 odec = Odec()
-
 app = Flask(__name__, static_url_path='/static')
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 # app = Flask(__name__)
-
 
 
 @app.route('/')
@@ -60,9 +62,9 @@ def detectv5():
     # # request.date
     data = request.get_json()       
    
-    f = data['image']
+    f = data['image'] 
     
-
+    # logger.warning(f)
     encoded_data = f.split(",")[1]    
     base64_decoded = base64.b64decode(encoded_data)    
     image = Image.open(BytesIO(base64_decoded))    
@@ -82,8 +84,10 @@ def detectv5():
 
 # Convert binary image data to base64-encoded string
     base64_image = base64.b64encode(image_bytes).decode('utf-8')
+    # logger.warning("data:image/jpeg;base64,"+base64_image)
+
     data = {
-        'image': base64_image,
+        'image': "data:image/jpeg;base64,"+base64_image,
         'count': m_count,
     }
 

@@ -1,0 +1,15 @@
+
+spython:S1192?"\Define a constant instead of duplicating this literal "Please wait, Processing ..." 3 times.(ôÒ·&
+vpython:S5890"YAssign to this expression a value of type "int" instead of "str" or update its type hint.(è§şúÿÿÿÿ
+[python:S3827""Cclose_cam is used before it is defined. Move the definition before.(šš¯æ
+6python:S125+"Remove this commented out code.(­¿ä¸
+6python:S1250"Remove this commented out code.(¨™±º
+;python:S1253"Remove this commented out code.(¡ì‹şÿÿÿÿ
+;python:S1257"Remove this commented out code.(íŸ·şÿÿÿÿ
+5python:S125D"Remove this commented out code.(¿şşs
+[python:S3827_"Cclose_cam is used before it is defined. Move the definition before.(šš¯æ
+ppython:S117e"TRename this parameter "imageUrl" to match the regular expression ^[_a-z][a-z0-9_]*$.(±†Û™ÿÿÿÿÿ
+kpython:S100e"ORename method "detectByUrl" to match the regular expression ^[a-z_][a-z0-9_]*$.(±†Û™ÿÿÿÿÿ
+6python:S125f"Remove this commented out code.(úæ¼å
+spython:S100k"WRename method "detectByUploadImage" to match the regular expression ^[a-z_][a-z0-9_]*$.(–ÑÙ±ûÿÿÿÿ
+;python:S125m"Remove this commented out code.(ŸüÂ¸ÿÿÿÿÿ

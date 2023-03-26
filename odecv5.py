@@ -5,6 +5,28 @@ import numpy as np
 from matplotlib import pyplot as plt
 import sys
 from pprint import pprint
+
+
+###########################logging part#################################
+import logging
+
+# Create a logger object
+logger = logging.getLogger('my_app')
+
+# Set the logging level
+logger.setLevel(logging.INFO)
+
+# Create a file handler and set the logging level
+file_handler = logging.FileHandler('my_app.log')
+file_handler.setLevel(logging.INFO)
+
+# Create a formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+# Add the file handler to the logger
+logger.addHandler(file_handler)
+###########################logging part#################################
 class Odec:
 
     def __init__(self,model_path:str = 'odec/best_x_380_hyp_16_10.pt',model_conf:int=0.25,target_cam:int = 0):
@@ -12,8 +34,9 @@ class Odec:
         self.target_cam:int = target_cam
         self.win_name:int = 'ODEC'
         self.model_conf:int = model_conf
-        model = torch.hub.load('odec','custom', source='local', path=self.model_path, force_reload=True)
+        model = torch.hub.load('odec','custom', source='local', path=self.model_path, force_reload=True  )
         model.conf = self.model_conf
+        model.hide_label = True
         self.model = model
 
 
@@ -106,9 +129,16 @@ class Odec:
     def detectByUploadImage(self,image:str):
         print("Please wait, Processing ...")
         # image = glob.glob(image_path)
-        result = self.model(image)    
+        result = self.model(image)
+        
         img = np.squeeze(result.render())  
         missing_count = result.xyxyn[0].size(dim=0)
+        # logger.warning('missing count --> '+ str(missing_count))
+    
+        # res = cv2.resize(img, dsize=(900,900), interpolation=cv2.INTER_CUBIC)
+        # cv2.namedWindow(self.win_name, cv2.WINDOW_NORMAL)
+        # cv2.imshow(self.win_name,img)
+        # print(result)
         return img, missing_count
     
 # Press the green button in the gutter to run the script.

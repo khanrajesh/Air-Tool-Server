@@ -1,0 +1,12 @@
+
+:
+
+my_app.log,8\3\834a835c97ad361b75d0e283e79a251df9d2a0d0
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+6
+app.py,1\3\13cce7fd076299c81b4986166f3d822791c9490e
+>
+odec/detect.py,2\6\26a450e0b0e1ad973aa6115e4ce1ab8e09f6dc0b
+9
+	odecv5.py,d\8\d88b67b19ce254576df78816536be1341cabe7d2
