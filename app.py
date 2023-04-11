@@ -42,7 +42,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 def index():
-    return render_template('tool.html')
+    return render_template('index.html')
 
 # HtmlVideoElement
 @app.route('/test',methods=['GET'])
